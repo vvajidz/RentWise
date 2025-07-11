@@ -1,12 +1,12 @@
-import RentWiseHeader from "@/components/common/header";
-import Homenavbar from "@/components/common/navbar";
+import LandingPage from "./landingpage/allUsers";
+
 
 export default function Home() {
 
 
   return(
        <div>
-        <RentWiseHeader/>
+        <LandingPage/>
        </div>
   )
 }

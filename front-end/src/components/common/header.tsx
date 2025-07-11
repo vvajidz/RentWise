@@ -4,8 +4,9 @@ import Link from "next/link";
 import { Philosopher } from "next/font/google";
 import Homenavbar from "./navbar";
 import { Button } from "@/components/ui/button";
-import { Building2, Home, KeyRound } from "lucide-react"
+import { Home } from "lucide-react";
 import FloatingIcons from "./floatings";
+import useAOS from "../common/aox"; // 💥 Import your hook here
 
 const philosopher = Philosopher({
   subsets: ["latin"],
@@ -13,24 +14,35 @@ const philosopher = Philosopher({
 });
 
 export default function RentWiseHeader() {
+  useAOS(); // 💥 Call it once
+
   return (
     <div className="relative bg-[#fdfcf9] overflow-hidden">
       <Homenavbar />
-
-      {/* Floating icons */}
       <FloatingIcons />
 
       <section
         className={`${philosopher.className} relative flex flex-col items-center text-center px-4 pt-24 pb-16`}
       >
-        <h1 className="text-4xl md:text-6xl font-bold text-[#1f2937] mb-3">
+        <h1
+          className="text-4xl md:text-6xl font-bold text-[#1f2937] mb-3"
+          data-aos="fade-down"
+        >
           Rent Smarter. Live Better.
         </h1>
-        <p className="text-gray-600 text-lg md:text-xl mb-6 max-w-2xl">
+        <p
+          className="text-gray-600 text-lg md:text-xl mb-6 max-w-2xl"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
           Discover premium rental properties and manage them effortlessly with RentWise. Trust the vibes, live your best life.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-10">
+        <div
+          className="flex flex-col sm:flex-row gap-4 mb-10"
+          data-aos="zoom-in"
+          data-aos-delay="400"
+        >
           <Link href="/properties">
             <Button className="px-8 py-3 bg-[#1f2937] text-white hover:bg-[#111827] text-lg font-semibold rounded-full transition">
               Explore Properties
@@ -43,10 +55,13 @@ export default function RentWiseHeader() {
           </Link>
         </div>
 
-        {/* Featured image section */}
-        <div className="relative w-full max-w-5xl rounded-3xl overflow-hidden shadow-xl mb-12">
+        <div
+          className="relative w-full max-w-5xl rounded-3xl overflow-hidden shadow-xl mb-12"
+          data-aos="fade-up"
+          data-aos-delay="600"
+        >
           <img
-            src="https://i.pinimg.com/1200x/ed/fb/4f/edfb4fbeacf09381d29bae140e849da0.jpg" // Replace with your own luxe property image
+            src="https://i.pinimg.com/1200x/ed/fb/4f/edfb4fbeacf09381d29bae140e849da0.jpg"
             alt="Premium Property"
             className="w-full h-64 md:h-96 object-cover"
           />
@@ -61,8 +76,11 @@ export default function RentWiseHeader() {
           </div>
         </div>
 
-        {/* Stat cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-5xl">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-5xl"
+          data-aos="fade-up"
+          data-aos-delay="800"
+        >
           <div className="bg-white border border-gray-200 rounded-xl px-6 py-5 flex flex-col items-center shadow-sm">
             <p className="text-2xl font-bold text-[#1f2937]">500+</p>
             <p className="text-gray-500 text-sm">Luxury Units</p>
