@@ -5,24 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "react-hot-toast";
 import Link from "next/link";
-import { School, UserPlus } from "lucide-react";
 import clsx from "clsx";
-
-const roles = [
-  {
-    key: "owner",
-    label: "Property Owner",
-    desc: "List and manage luxury properties",
-    icon: School,
-  },
-  {
-    key: "tenant",
-    label: "Tenant",
-    desc: "Find premium luxury rentals",
-    icon: UserPlus,
-  },
-];
+import PasswordInput from "./password";
+import RoleSelector from "./roleSelector";
 
 type Props = {
   onSwitch: () => void;
@@ -36,6 +23,7 @@ export default function SignUpCard({ onSwitch }: Props) {
     confirmPassword: "",
     agreedToTerms: false,
   });
+
   const [selectedRole, setSelectedRole] = useState<"owner" | "tenant" | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,9 +31,47 @@ export default function SignUpCard({ onSwitch }: Props) {
     setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Signup Data:", { ...formData, role: selectedRole });
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Password does not match");
+      return;
+    }
+
+    if (!formData.agreedToTerms) {
+      toast.error("You must agree to the Terms and Privacy Policy");
+      return;
+    }
+
+    if (!selectedRole) {
+      toast.error("Please select a role");
+      return;
+    }
+
+    const payload = {
+      fullName: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+      role: selectedRole,
+      agreedToTerms: formData.agreedToTerms,
+    };
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Something went wrong");
+
+      toast.success("Account Created!");
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
   return (
@@ -53,31 +79,7 @@ export default function SignUpCard({ onSwitch }: Props) {
       <h3 className="text-2xl font-bold text-gray-800 mb-4">Create Your Account</h3>
       <p className="text-gray-600">Select your role to begin</p>
 
-      <div className="flex space-x-4 mt-4 mb-6">
-        {roles.map(({ key, label, desc, icon: Icon }) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => setSelectedRole(key as "owner" | "tenant")}
-            className={clsx(
-              "flex-1 py-4 px-3 rounded-lg border-2 transition-all flex flex-col items-center",
-              selectedRole === key && key === "owner" && "border-yellow-900 bg-yellow-100",
-              selectedRole === key && key === "tenant" && "border-blue-900 bg-blue-100",
-              selectedRole !== key && key === "owner" && "border-gray-200 hover:border-yellow-300",
-              selectedRole !== key && key === "tenant" && "border-gray-200 hover:border-blue-300"
-            )}
-          >
-            <Icon
-              className={clsx(
-                "w-10 h-10 mb-2",
-                key === "owner" ? "text-yellow-900" : "text-blue-900"
-              )}
-            />
-            <h4 className="font-bold text-gray-800 text-sm">{label}</h4>
-            <p className="text-xs text-gray-600 mt-1 text-center">{desc}</p>
-          </button>
-        ))}
-      </div>
+      <RoleSelector selectedRole={selectedRole} setSelectedRole={setSelectedRole} />
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -106,32 +108,24 @@ export default function SignUpCard({ onSwitch }: Props) {
             className="mt-2"
           />
         </div>
-        <div>
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Create a password"
-            required
-            className="mt-2"
-          />
-        </div>
-        <div>
-          <Label htmlFor="confirmPassword">Confirm Password</Label>
-          <Input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm your password"
-            required
-            className="mt-2"
-          />
-        </div>
+        <PasswordInput
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Create a password"
+          label="Password"
+          required
+        />
+        <PasswordInput
+          id="confirmPassword"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          placeholder="Confirm your password"
+          label="Confirm Password"
+          required
+        />
         <div className="flex items-start space-x-3">
           <Checkbox
             id="terms"

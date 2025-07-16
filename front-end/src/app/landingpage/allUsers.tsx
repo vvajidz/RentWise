@@ -1,6 +1,6 @@
 import RentWiseFooter from "@/components/common/about";
 import SupportSection from "@/components/common/benifits";
-import FloatingIcons from "@/components/common/floatings";
+import FloatingIcons from "@/animations/floatings";
 import RentWiseHeader from "@/components/common/header";
 import ReviewsSection from "@/components/common/reviews";
 import HowItWorks from "@/components/common/working";

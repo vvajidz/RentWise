@@ -67,7 +67,7 @@ export default function Homenavbar() {
       {/* Desktop navbar */}
       {showDesktopNav && (
         <nav
-          className={`${philosopher.className} hidden md:block fixed top-0 z-50 w-full bg-transparent transition-transform duration-500`}
+          className={`${philosopher.className} hidden md:block fixed top-0 bg-white z-50 w-full  transition-transform duration-500`}
         >
           <div className="container mx-auto flex items-center justify-between px-6 py-4">
             <Link
@@ -112,7 +112,7 @@ export default function Homenavbar() {
       <div className="block md:hidden py-4 text-center w-full">
         <Link
           href="/"
-          className="text-3xl font-bold text-gray-900 tracking-wide transition-transform hover:scale-105"
+          className={`${philosopher.className} text-3xl font-bold text-gray-900 tracking-wide transition-transform hover:scale-105`}
         >
           RentWise
         </Link>

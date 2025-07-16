@@ -1,7 +1,7 @@
 "use client";
 
 import { UserCheck, Home, Wallet, FileText, MessageSquare } from "lucide-react";
-import useAOS from "../common/aox";
+import useAOS from "../../hooks/aox";
 
 export default function SupportSection() {
   useAOS(); // 💥 Call the custom hook

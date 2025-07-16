@@ -5,8 +5,8 @@ import { Philosopher } from "next/font/google";
 import Homenavbar from "./navbar";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
-import FloatingIcons from "./floatings";
-import useAOS from "../common/aox"; // 💥 Import your hook here
+import FloatingIcons from "../../animations/floatings";
+import useAOS from "../../hooks/aox"; // 💥 Import your hook here
 
 const philosopher = Philosopher({
   subsets: ["latin"],

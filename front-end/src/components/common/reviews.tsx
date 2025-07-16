@@ -2,7 +2,7 @@
 
 import { Star, User } from "lucide-react";
 import { Philosopher } from "next/font/google";
-import useAOS from "../common/aox"; // ✅ Use custom hook
+import useAOS from "../../hooks/aox"; // ✅ Use custom hook
 
 const philosopher = Philosopher({
   subsets: ["latin"],

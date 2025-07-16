@@ -2,7 +2,7 @@
 
 import { Building2, KeyRound, Home, Sparkles } from "lucide-react";
 import { Philosopher } from "next/font/google";
-import useAOS from "../common/aox"; // ✅ use hook
+import useAOS from "../../hooks/aox"; // ✅ use hook
 
 const philosopher = Philosopher({
   subsets: ["latin"],
