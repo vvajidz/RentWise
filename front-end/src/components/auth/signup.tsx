@@ -10,6 +10,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import PasswordInput from "./password";
 import RoleSelector from "./roleSelector";
+import { useUserStore } from "@/store/zustand";
 
 type Props = {
   onSwitch: () => void;
@@ -25,6 +26,8 @@ export default function SignUpCard({ onSwitch }: Props) {
   });
 
   const [selectedRole, setSelectedRole] = useState<"owner" | "tenant" | null>(null);
+
+  const {setUser} = useUserStore()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -67,6 +70,15 @@ export default function SignUpCard({ onSwitch }: Props) {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Something went wrong");
+
+      //Set user in Zustand after success--------------------------
+
+      setUser({
+        fullName:data.user.fullName,
+        email:data.user.email,
+        role:data.user.role
+      })
+    // --------------------------------------
 
       toast.success("Account Created!");
     } catch (err: any) {

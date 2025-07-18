@@ -4,7 +4,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": true,
-    "types": ["node"]
-  }
+    "strict": true
+  },
+  "include": ["src", "types"]
 }

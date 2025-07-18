@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 export default function CustomToaster() {
   return (
     <Toaster
-      position="top-center"
+      position="top-right"
       toastOptions={{
         style: {
           borderRadius: "12px",

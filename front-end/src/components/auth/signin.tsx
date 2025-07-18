@@ -4,7 +4,10 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { FcGoogle } from "react-icons/fc"; // using react-icons for Google logo
+import { FcGoogle } from "react-icons/fc";
+import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
+import toast from "react-hot-toast";
+import { useUserStore } from "@/store/zustand";
 
 type Props = {
   onSwitch: () => void;
@@ -12,20 +15,49 @@ type Props = {
 
 export default function SignInCard({ onSwitch }: Props) {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const { setUser } = useUserStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login Data:", formData);
+
+    const payload = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Something went wrong");
+
+      setUser({
+        fullName: data.user.fullName,
+        email: data.user.email,
+        role: data.user.role,
+      });
+
+      toast.success("Logged in successfully 🚀");
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
   const handleGoogleLogin = () => {
     console.log("Clicked Google login");
-    // You can integrate your Google login logic here
+    // Add Google login logic here
   };
 
   return (
@@ -62,19 +94,28 @@ export default function SignInCard({ onSwitch }: Props) {
             className="mt-2"
           />
         </div>
-        <div>
+
+        <div className="relative">
           <Label htmlFor="password">Password</Label>
           <Input
             id="password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={formData.password}
             onChange={handleChange}
             placeholder="Enter your password"
             required
-            className="mt-2"
+            className="mt-2 pr-10" // add padding for eye icon
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute top-7 right-3 text-gray-500"
+          >
+            {showPassword ? <HiOutlineEyeOff size={20} /> : <HiOutlineEye size={20} />}
+          </button>
         </div>
+
         <Button type="submit" className="w-full py-6 text-lg bg-blue-600 hover:bg-blue-900">
           Login
         </Button>

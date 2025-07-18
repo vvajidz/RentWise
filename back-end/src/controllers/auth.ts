@@ -1,7 +1,8 @@
 import { Request , Response } from "express";
 import User from "../models/userModel"
 import { ROLES } from "../constatnts.ts/role";
-import { comparePasswords, generateToken, hashPassword } from "../services/authService";
+import { comparePasswords, generateToken, hashPassword } from "../services/passHash";
+import { AuthRequest } from "../middleware/getme";
 
 
 // SIGNUP-------------------------------
@@ -109,6 +110,7 @@ export const login = async(req:Request , res:Response) => {
     res.status(500).json({ message: "Server error during login." });
   }
 }
+//---------------------------------------------------------------------LOGOUT
 
 export const logout = async(req:Request , res:Response) => {
     try{
@@ -126,3 +128,21 @@ export const logout = async(req:Request , res:Response) => {
         res.status(500).json({ message: "Server error during logout." })
     }
 }
+
+// -----------------------------------CHECK WHO AM I ---------------------------
+
+export const getMe = async (req: AuthRequest, res: Response) => {
+  try {
+    // We get userId from decoded JWT (middleware puts it into req.userId)
+    const user = await User.findById(req.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error." });
+  }
+};
