@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./src/config/db";
 import authRouter from "./src/routes/authRoutes";
+import propertyRouter from "./src/routes/propertyRouter"
 import cookieParser from "cookie-parser";
-import "./src/config/goooglePassport"; // Make sure the filename is correct (typo check)
 
 // Connect to DB
 connectDB();
@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", authRouter);        // Local auth routes
-
+app.use("/api/property", propertyRouter )
 // Start server
 const PORT = 5000;
 app.listen(PORT, () => {

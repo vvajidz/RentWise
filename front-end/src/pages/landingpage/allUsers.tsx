@@ -9,7 +9,7 @@ import HowItWorks from "@/components/common/working";
 import { useUserStore } from "@/store/zustand";
 import RentWiseAdmin from "../admin/header";
 import RentWiseOwner from "../owner/header";
-import RentWiseTenents from "../tenents/header";
+import RentWiseTenents from "../tenents/tenentHeader";
 import Homenavbar from "@/components/common/navbar";
 
 export default function LandingPage() {

@@ -2,6 +2,8 @@
 
 import { create } from "zustand";
 
+
+// --------------------------------------------USER STORE--------------------
 type User = {
   fullName: string;
   email: string;
@@ -20,3 +22,5 @@ export const useUserStore = create<UserState>((set) => ({
   setUser: (user) => set({ user }),
   clearUser: () => set({ user: null }),
 }));
+
+

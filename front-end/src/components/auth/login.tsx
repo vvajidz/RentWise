@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, LoginSchemaType } from "@/validation/loginSchema";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -8,40 +10,29 @@ import { FcGoogle } from "react-icons/fc";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import toast from "react-hot-toast";
 import { useUserStore } from "@/store/zustand";
+import api from "@/lib/axios";
+import { useState } from "react";
 
 type Props = {
   onSwitch: () => void;
 };
 
 export default function SignInCard({ onSwitch }: Props) {
-  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-
   const { setUser } = useUserStore();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchemaType>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const payload = {
-      email: formData.email,
-      password: formData.password,
-    };
-
+  const onSubmit = async (formData: LoginSchemaType) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        credentials: "include",
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Something went wrong");
+      const res = await api.post("/auth/login", formData);
+      const data = res.data;
 
       setUser({
         fullName: data.user.fullName,
@@ -50,14 +41,13 @@ export default function SignInCard({ onSwitch }: Props) {
       });
 
       toast.success("Logged in successfully 🚀");
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err:any) {
+      toast.error(err?.response?.data?.message || "Something went wrong");
     }
   };
 
   const handleGoogleLogin = () => {
     console.log("Clicked Google login");
-    // Add Google login logic here
   };
 
   return (
@@ -80,32 +70,28 @@ export default function SignInCard({ onSwitch }: Props) {
         <div className="flex-1 h-px bg-gray-300"></div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div>
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
-            name="email"
             type="email"
-            value={formData.email}
-            onChange={handleChange}
             placeholder="Enter your email"
-            required
-            className="mt-2"
+            {...register("email")}
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
         </div>
 
         <div className="relative">
           <Label htmlFor="password">Password</Label>
           <Input
             id="password"
-            name="password"
             type={showPassword ? "text" : "password"}
-            value={formData.password}
-            onChange={handleChange}
             placeholder="Enter your password"
-            required
-            className="mt-2 pr-10" // add padding for eye icon
+            {...register("password")}
+            className="pr-10"
           />
           <button
             type="button"
@@ -114,9 +100,15 @@ export default function SignInCard({ onSwitch }: Props) {
           >
             {showPassword ? <HiOutlineEyeOff size={20} /> : <HiOutlineEye size={20} />}
           </button>
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+          )}
         </div>
 
-        <Button type="submit" className="w-full py-6 text-lg bg-blue-600 hover:bg-blue-900">
+        <Button
+          type="submit"
+          className="w-full py-6 text-lg bg-blue-600 hover:bg-blue-900"
+        >
           Login
         </Button>
       </form>

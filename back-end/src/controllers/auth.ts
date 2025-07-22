@@ -56,7 +56,7 @@ const token = generateToken(newUser)
         }
     })
     }catch(error){
-        console.error("Signup erro" , error);
+        console.error("Signup error" , error);
         res.status(500).json({message : "Server error during signup"})
 }
 }

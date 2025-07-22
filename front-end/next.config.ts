@@ -1,9 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    domains: ['i.imgur.com', 'i.pinimg.com'], // you used both Imgur and Pinterest images
+  },
+  reactStrictMode: true,
 };
 
-
-
-export default nextConfig;
+module.exports = nextConfig;

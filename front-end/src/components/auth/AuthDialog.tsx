@@ -4,7 +4,7 @@
 import { useState, useRef, useLayoutEffect } from "react";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import SignUpCard from "./signup";
-import SignInCard from "./signin";
+import SignInCard from "./login";
 
 type AuthDialogProps = {
   asChild?: boolean;
