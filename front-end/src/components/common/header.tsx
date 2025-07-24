@@ -1,28 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { Philosopher } from "next/font/google";
 import Homenavbar from "./navbar";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import FloatingIcons from "../../animations/floatings";
 import useAOS from "../../hooks/aox"; // 💥 Import your hook here
 
-const philosopher = Philosopher({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
 
 export default function RentWiseHeader() {
   useAOS(); // 💥 Call it once
 
   return (
     <div className="relative bg-[#fdfcf9] overflow-hidden">
-      <Homenavbar />
+  
       <FloatingIcons />
 
       <section
-        className={`${philosopher.className} relative flex flex-col items-center text-center px-4 pt-24 pb-16`}
+        className="relative flex flex-col items-center text-center px-4 pt-24 pb-16"
       >
         <h1
           className="text-4xl md:text-6xl font-bold text-[#1f2937] mb-3"

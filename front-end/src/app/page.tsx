@@ -1,5 +1,5 @@
 import CustomToaster from "@/animations/cstmTost";
-import LandingPage from "../pages/landingpage/allUsers";
+import LandingPage from "./landingpage/allUsers";
 
 
 export default function Home() {

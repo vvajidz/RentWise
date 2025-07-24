@@ -12,7 +12,7 @@ import clsx from "clsx";
 import { toast } from "react-hot-toast";
 import PasswordInput from "./password";
 import RoleSelector from "./roleSelector";
-import { useUserStore } from "@/store/zustand";
+import { useUserStore } from "@/store/zustand/zustand";
 import api from "@/lib/axios";
 
 type Props = {
@@ -43,6 +43,7 @@ export default function SignUpCard({ onSwitch }: Props) {
         fullName: data.user.fullName,
         email: data.user.email,
         role: data.user.role,
+        createdAt: data.user.createdAt || new Date().toISOString(), // fallback to now
       });
 
       toast.success("Account Created!");

@@ -1,13 +1,8 @@
 "use client";
 
 import { Star, User } from "lucide-react";
-import { Philosopher } from "next/font/google";
 import useAOS from "../../hooks/aox"; // ✅ Use custom hook
 
-const philosopher = Philosopher({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
 
 const ratingsData = [
   { stars: 5, count: 1200 },
@@ -28,7 +23,7 @@ export default function ReviewsSection() {
   return (
     <section
       id="reviews"
-      className={`bg-[#fdfcf9] py-20 px-6 ${philosopher.className}`}
+      className="bg-[#fdfcf9] py-20 px-6 "
     >
       <h2
         className="text-3xl md:text-5xl font-bold text-[#1f2937] text-center mb-6"

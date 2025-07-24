@@ -6,10 +6,10 @@ import FloatingIcons from "@/animations/floatings";
 import RentWiseHeader from "@/components/common/header";
 import ReviewsSection from "@/components/common/reviews";
 import HowItWorks from "@/components/common/working";
-import { useUserStore } from "@/store/zustand";
-import RentWiseAdmin from "../admin/header";
-import RentWiseOwner from "../owner/header";
-import RentWiseTenents from "../tenents/tenentHeader";
+import { useUserStore } from "@/store/zustand/zustand";
+import RentWiseAdmin from "../../components/admin/header";
+import RentWiseOwner from "../../components/owner/header";
+import RentWiseTenants from "../../components/common/tenantHeader";
 import Homenavbar from "@/components/common/navbar";
 
 export default function LandingPage() {
@@ -19,7 +19,7 @@ export default function LandingPage() {
   let headerComponent;
 
   if (user?.role === "tenant") {
-    headerComponent = <RentWiseTenents />;
+    headerComponent = <RentWiseTenants />;
   } else if (user?.role === "owner") {
     headerComponent = <RentWiseOwner />;
   } else if (user?.role === "admin") {

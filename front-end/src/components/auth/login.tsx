@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import toast from "react-hot-toast";
-import { useUserStore } from "@/store/zustand";
+import { useUserStore } from "@/store/zustand/zustand";
 import api from "@/lib/axios";
 import { useState } from "react";
 
@@ -38,6 +38,7 @@ export default function SignInCard({ onSwitch }: Props) {
         fullName: data.user.fullName,
         email: data.user.email,
         role: data.user.role,
+        createdAt:data.user.createdAt
       });
 
       toast.success("Logged in successfully 🚀");

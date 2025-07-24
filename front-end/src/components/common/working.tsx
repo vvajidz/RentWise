@@ -1,13 +1,8 @@
 "use client";
 
 import { Building2, KeyRound, Home, Sparkles } from "lucide-react";
-import { Philosopher } from "next/font/google";
 import useAOS from "../../hooks/aox"; // ✅ use hook
 
-const philosopher = Philosopher({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
 
 interface Step {
   title: string;
@@ -44,7 +39,7 @@ export default function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className={`bg-[#fdfcf9] py-20 px-6 text-center ${philosopher.className}`}
+      className="bg-[#fdfcf9] py-20 px-6 text-center"
     >
       <h2
         className="text-3xl md:text-5xl font-bold text-[#1f2937] mb-4"

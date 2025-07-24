@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { useUserStore } from "@/store/zustand";
+import { useUserStore } from "@/store/zustand/zustand";
 import { toast } from "react-hot-toast";
 
 export const logoutUser = async () => {

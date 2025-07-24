@@ -1,17 +1,13 @@
 "use client";
 
-import { Philosopher } from "next/font/google";
 import FloatingIcons from "../../animations/floatings";
 import useAOS from "../../hooks/aox";
 import { useProperties } from "@/app/all-properties/propertyFetch";
 import PropertyCard from "@/components/common/propertyCard";
 import Link from "next/link";
-import { useUserStore } from "@/store/zustand";
+import { useUserStore } from "@/store/zustand/zustand";
 
-const philosopher = Philosopher({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
+
 
 export default function RentWiseTenants() {
   useAOS();
@@ -23,7 +19,7 @@ export default function RentWiseTenants() {
       <FloatingIcons />
 
       {/* Header */}
-      <section className={`${philosopher.className} relative text-center px-4 pt-24 pb-10`}>
+      <section className="relative text-center px-4 pt-24 pb-10">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-800 mb-4">
           Find Your New Home,{" "}
           <span className="bg-gradient-to-r from-blue-950 via-gray-700 to-blue-700 bg-clip-text text-transparent">

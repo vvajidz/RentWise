@@ -1,4 +1,4 @@
-import { useUserStore } from "./zustand";
+import { useUserStore } from "./zustand/zustand";
 import { useEffect } from "react";
 
 export const useAuthSync = () => {
@@ -14,7 +14,7 @@ export const useAuthSync = () => {
         if (!res.ok) throw new Error("Not authenticated");
 
         const data = await res.json();
-        setUser({ fullName: data.fullName, email: data.email, role: data.role });
+        setUser(data);
       } catch (err) {
         clearUser();
       }
