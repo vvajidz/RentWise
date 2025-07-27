@@ -18,7 +18,16 @@ export interface IProperty extends Document {
   amenities: string[];
   guidelines: string[];
   requiredDocuments: string[];
-  tenants: Types.ObjectId[]; // user references
+  tenants: Types.ObjectId[];
+  isAvailable: boolean;
+  description: string;
+  areaSqFt: number;
+  balconyCount: number;
+  bathrooms: number;
+  bedrooms: number;
+  floorNumber: number;
+  totalFloors: number;
+  furnishing: "unfurnished" | "semi-furnished" | "fully-furnished" | string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -26,7 +35,7 @@ export interface IProperty extends Document {
 const PropertySchema: Schema<IProperty> = new Schema(
   {
     propertyName: { type: String, required: true },
-    propertyType: { type: String, required: true }, // e.g. "Luxury Apartment"
+    propertyType: { type: String, required: true },
     address: { type: String, required: true },
     location: {
       type: { type: String, enum: ["Point"], default: "Point" },
@@ -37,12 +46,25 @@ const PropertySchema: Schema<IProperty> = new Schema(
     securityDeposit: { type: Number, required: true },
     utilitiesIncluded: { type: Boolean, default: false },
     availableFrom: { type: Date, required: true },
-    minimumStay: { type: Number, default: 1 }, // months
-    leaseTerms: { type: Number, default: 12 }, // months
+    minimumStay: { type: Number, default: 1 },
+    leaseTerms: { type: Number, default: 12 },
     amenities: [{ type: String }],
     guidelines: [{ type: String }],
     requiredDocuments: [{ type: String }],
     tenants: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    isAvailable: { type: Boolean, default: true },
+    description: { type: String, required: true },
+    areaSqFt: { type: Number },
+    balconyCount: { type: Number },
+    bathrooms: { type: Number },
+    bedrooms: { type: Number },
+    floorNumber: { type: Number },
+    totalFloors: { type: Number },
+    furnishing: {
+      type: String,
+      enum: ["unfurnished", "semi-furnished", "fully-furnished"],
+      default: "unfurnished",
+    },
   },
   {
     timestamps: true,

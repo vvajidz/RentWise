@@ -18,6 +18,7 @@ import ReviewsSection from "../propertyReview";
 import RentWiseFooter from "@/components/common/about";
 
 import useAOS from "@/hooks/aox";
+import BookingCTA from "../propertyBooking";
 
 interface Property {
   _id: string;
@@ -38,17 +39,23 @@ interface Property {
   amenities: string[];
   guidelines: string[];
   requiredDocuments: string[];
-  description?: string;
+  description: string;
   reviews?: { user: string; comment: string; rating: number }[];
   bedrooms: number;
   bathrooms: number;
-  squareFeet: number;
-  furnished: boolean;
-  nearbyLocations: {
+  areaSqFt: number;
+  balconyCount: number;
+  floorNumber: number;
+  totalFloors: number;
+  furnishing: string;
+  isAvailable: boolean;
+  tenants: string[];
+  nearbyLocations?: {
     category: string;
     places: { name: string; distance: string }[];
   }[];
 }
+
 
 export default function PropertyDetailsPage() {
   useAOS();
@@ -87,16 +94,16 @@ export default function PropertyDetailsPage() {
     <div>
       <div className="max-w-7xl mx-auto px-4 py-10 space-y-10">
         {/* Back Button */}
-<div>
-  <Link
-    href="/all-properties"
-    className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-600 text-yellow-900 hover:bg-yellow-800 hover:text-white text-sm font-medium transition-all duration-200 shadow-sm"
-    data-aos="fade-right"
-  >
-    <ArrowLeft className="w-4 h-4" />
-    Back
-  </Link>
-</div>
+        <div>
+          <Link
+            href="/all-properties"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-600 text-yellow-900 hover:bg-yellow-800 hover:text-white text-sm font-medium transition-all duration-200 shadow-sm"
+            data-aos="fade-right"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Link>
+        </div>
 
 
         <PropertyHeader property={property} />

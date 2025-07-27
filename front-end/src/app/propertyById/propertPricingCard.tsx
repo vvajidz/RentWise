@@ -1,8 +1,11 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { CalendarIcon, ShieldCheck, DollarSign } from "lucide-react";
+import {
+  CheckCircle,
+  CalendarDays,
+  ShieldCheck,
+  DollarSign,
+} from "lucide-react";
 
 interface PricingCardProps {
   property: {
@@ -11,6 +14,7 @@ interface PricingCardProps {
     utilitiesIncluded?: boolean;
     availableFrom?: string;
     leaseTerms?: number;
+    isAvailable?: boolean;
   };
 }
 
@@ -21,58 +25,97 @@ const PricingCard: React.FC<PricingCardProps> = ({ property }) => {
     utilitiesIncluded,
     availableFrom,
     leaseTerms,
+    isAvailable,
   } = property;
 
+  const formattedAvailableFrom = availableFrom
+    ? new Date(availableFrom).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+    : "N/A";
+
   return (
-    <Card
-      className="rounded-3xl p-6 shadow-md border-none bg-white"
+    <div
       data-aos="fade-up"
+      data-aos-once="true"
+      className="bg-white rounded-2xl p-6 shadow-xl border border-gray-200"
     >
-      <CardContent className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-800">
-              ₹{monthlyRent?.toLocaleString("en-IN") || "N/A"}
-              <span className="text-sm text-gray-500 font-normal"> /month</span>
-            </h2>
-            {utilitiesIncluded && (
-              <p className="text-xs text-green-600 mt-1 font-medium">
-                ✅ Utilities Included
-              </p>
-            )}
-          </div>
-          <Badge className="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm font-medium">
-            RentWise Verified
-          </Badge>
+      {/* Top Section */}
+      <div className="flex items-center justify-between mb-6" data-aos="fade-down">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900">
+            ${monthlyRent?.toLocaleString() || "N/A"}
+            <span className="text-base text-gray-500 font-medium"> /month</span>
+          </h2>
+
+          {utilitiesIncluded && (
+            <p className="text-sm text-emerald-600 mt-1 font-medium flex items-center gap-1">
+              <CheckCircle size={16} />
+              Utilities Included
+            </p>
+          )}
         </div>
 
-        <div className="border-t border-gray-200 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
+        <div className="bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-semibold shadow-sm">
+          RentWise Verified
+        </div>
+      </div>
+
+      {/* Info Grid */}
+      <div
+        className="border-t pt-4 border-gray-200 space-y-4 text-sm text-gray-700"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-indigo-500" />
+            <ShieldCheck className="w-5 h-5 text-blue-500" />
             <span>
-              Security Deposit: ₹{securityDeposit?.toLocaleString("en-IN") || "N/A"}
+              Security Deposit:{" "}
+              <span className="font-medium text-gray-900">
+                ${securityDeposit?.toLocaleString() || "N/A"}
+              </span>
             </span>
           </div>
+
           <div className="flex items-center gap-2">
-            <CalendarIcon className="w-5 h-5 text-indigo-500" />
+            <CalendarDays className="w-5 h-5 text-blue-500" />
             <span>
-              Available from:{" "}
-              {availableFrom
-                ? new Date(availableFrom).toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })
-                : "N/A"}
+              Available From:{" "}
+              <span className="font-medium text-gray-900">
+                {formattedAvailableFrom}
+              </span>
             </span>
           </div>
+
           <div className="flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-indigo-500" />
-            <span>Lease Terms: {leaseTerms ?? "N/A"} months</span>
+            <DollarSign className="w-5 h-5 text-blue-500" />
+            <span>
+              Lease Term:{" "}
+              <span className="font-medium text-gray-900">
+                {leaseTerms ?? "N/A"} months
+              </span>
+            </span>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+
+      {/* Button */}
+      <div className="pt-6 flex justify-end" data-aos="fade-up" data-aos-delay="200">
+        <button
+          disabled={!isAvailable}
+          className={`w-48 text-white font-semibold text-sm py-3 px-6 rounded-xl transition duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 ${
+            isAvailable
+              ? "bg-blue-600 hover:bg-blue-700"
+              : "bg-gray-400 cursor-not-allowed"
+          }`}
+        >
+          {isAvailable ? "Book Now" : "Not Available Yet"}
+        </button>
+      </div>
+    </div>
   );
 };
 

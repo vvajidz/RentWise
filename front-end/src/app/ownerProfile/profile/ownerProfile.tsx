@@ -1,9 +1,9 @@
 "use client";
 
-import { CheckCircle, Phone, Calendar, User as UserIcon } from "lucide-react";
+import { CheckCircle, Calendar, Home, User as UserIcon } from "lucide-react";
 import Image from "next/image";
-import {User} from "@/store/zustand/zustand"
-import { useUserStore } from "@/store/zustand/zustand";
+import { useUserStore, User , OwnerData } from "@/store/zustand/zustand";
+import { OwnerProfile } from "@/types/owner";
 
 const fallbackImage =
   "https://i.pinimg.com/736x/b6/49/f0/b649f021d937b2bcf703a25d9d698746.jpg";
@@ -20,25 +20,19 @@ const formatDate = (date?: string): string => {
 const capitalize = (str: string): string =>
   str.charAt(0).toUpperCase() + str.slice(1);
 
-export default function TenantProfileCard() {
-
+export default function ProfileCard() {
   const user = useUserStore((state) => state.user) as User | null;
-  console.log("User from Zustand:", user);
-
-
 
   if (!user) return null;
 
-
-
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-6">
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-6 col-span-12 lg:col-span-8">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-gray-200">
+        <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-gray-200">
           <Image
-            src={user.profileImageUrl || fallbackImage}
-            alt={user.fullName}
+            src={user.profilePicture || fallbackImage}
+            alt={user.fullName || "Owner"}
             fill
             className="object-cover"
           />
@@ -46,7 +40,9 @@ export default function TenantProfileCard() {
 
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h2 className="text-xl font-bold text-gray-900">{user.fullName}</h2>
+            <h2 className="text-xl font-bold text-gray-900">
+              {user.fullName}
+            </h2>
             <CheckCircle className="w-5 h-5 text-green-500" />
           </div>
 
@@ -59,15 +55,8 @@ export default function TenantProfileCard() {
         </div>
       </div>
 
-      {/* Contact Info */}
+      {/* Profile Info */}
       <div className="space-y-3 border-t border-gray-100 pt-4 text-sm text-gray-700">
-        <div className="flex items-center gap-3">
-          <Phone className="w-4 h-4 text-gray-500" />
-          <span className={user.phoneNumber ? "" : "text-gray-400 italic"}>
-            {user.phoneNumber || "Phone not provided"}
-          </span>
-        </div>
-
         <div className="flex items-center gap-3">
           <Calendar className="w-4 h-4 text-gray-500" />
           <span>
@@ -77,7 +66,17 @@ export default function TenantProfileCard() {
             </span>
           </span>
         </div>
+
+        <div className="flex items-center gap-3">
+          <Home className="w-4 h-4 text-gray-500" />
+          <span className="text-gray-700 font-medium">
+            Owns {user.ownerData?.ownedProperties ?? 0} properties  
+          </span>
+        </div>
       </div>
+
+      {/* Bio */}
+      <p className="text-sm text-gray-600 mt-6">{user.ownerData?.bio }</p>
     </div>
   );
 }

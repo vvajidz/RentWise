@@ -30,7 +30,7 @@ export function useProperties() {
       try {
         const res = await api.get("/property/allproperty");
         setProperties(res.data.data);
-        console.log(properties)
+        console.log("properties fetched :" , properties)
       } catch (err) {
         toast.error("Failed to load properties");
         console.error(err);
@@ -42,7 +42,6 @@ export function useProperties() {
     fetchProperties();
   }, []);
 
-  console.log(properties)
 
   return { properties, loading };
 }

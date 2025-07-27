@@ -30,25 +30,67 @@ export default function SignUpCard({ onSwitch }: Props) {
     watch,
   } = useForm<SignupSchemaType>({
     resolver: zodResolver(signupSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: undefined,
+      agreedToTerms: false,
+    },
   });
 
   const selectedRole = watch("role");
 
   const onSubmit = async (formData: SignupSchemaType) => {
     try {
-      const res = await api.post("/auth/signup", formData);
-      const data = res.data;
+      console.log("📤 Sending signup data:", formData);
 
-      setUser({
+      const res = await api.post("/auth/signup", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = res.data;
+      console.log("✅ Signup success response:", data);
+
+      if (!data?.user) {
+        throw new Error("Unexpected response format: Missing user field");
+      }
+
+      // Set user to Zustand or context
+      // Set user to Zustand or context
+      const userPayload = {
+        _id: data.user._id, // <-- crucial!
         fullName: data.user.fullName,
         email: data.user.email,
         role: data.user.role,
-        createdAt: data.user.createdAt || new Date().toISOString(), // fallback to now
-      });
+        phone: data.user.phone || null,
+        profilePicture: data.user.profilePicture || null,
+        createdAt: data.user.createdAt || new Date().toISOString(),
 
-      toast.success("Account Created!");
+        // Optional: init empty tenant/owner object for future-safe logic
+        tenantData: data.user.role === "tenant" ? {} : undefined,
+        ownerData: data.user.role === "owner" ? {} : undefined,
+      };
+
+      setUser(userPayload);
+
+      console.log("🧠 Zustand user set:", userPayload);
+
+      toast.success("🎉 Account Created!");
+
+
+      toast.success("🎉 Account Created!");
     } catch (err: any) {
-      const errorMsg = err?.response?.data?.message || err.message || "Signup failed";
+      console.error("❌ Signup error:", err);
+
+      const errorMsg =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Signup failed. Please try again.";
+
       toast.error(errorMsg);
     }
   };
@@ -79,10 +121,12 @@ export default function SignUpCard({ onSwitch }: Props) {
         <PasswordInput
           id="password"
           label="Password"
-          placeholder="Create a password"
+          placeholder="Enter your password"
           {...register("password")}
         />
-        {errors.password && <p className="text-sm text-red-600">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="text-sm text-red-600">{errors.password.message}</p>
+        )}
 
         <PasswordInput
           id="confirmPassword"
@@ -93,6 +137,7 @@ export default function SignUpCard({ onSwitch }: Props) {
         {errors.confirmPassword && (
           <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>
         )}
+
 
         <div className="flex items-start space-x-3">
           <Checkbox

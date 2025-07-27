@@ -8,13 +8,13 @@ import ReviewsSection from "@/components/common/reviews";
 import HowItWorks from "@/components/common/working";
 import { useUserStore } from "@/store/zustand/zustand";
 import RentWiseAdmin from "../../components/admin/header";
-import RentWiseOwner from "../../components/owner/header";
-import RentWiseTenants from "../../components/common/tenantHeader";
+import RentWiseOwner from "../ownerProfile/header";
+import RentWiseTenants from "../tenantProfile/tenantHeader";
 import Homenavbar from "@/components/common/navbar";
 
 export default function LandingPage() {
 
- const {user} = useUserStore() 
+  const { user } = useUserStore()
 
   let headerComponent;
 
@@ -32,8 +32,10 @@ export default function LandingPage() {
     <div className="relative bg-[#fdfcf9] overflow-hidden">
       <FloatingIcons />
       <div>
-        <Homenavbar/>
-        {headerComponent}
+        <Homenavbar />
+        <div className="pt-[80px]"> {/* 80px depending on navbar height */}
+          {headerComponent}
+        </div>
       </div>
 
       <HowItWorks />
@@ -41,7 +43,7 @@ export default function LandingPage() {
       <SupportSection />
       {/* About section wrapper hides icons */}
       <div className="relative overflow-hidden z-10">
-        <RentWiseFooter/>
+        <RentWiseFooter />
       </div>
     </div>
   );

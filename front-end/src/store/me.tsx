@@ -1,5 +1,5 @@
 import { useUserStore } from "./zustand/zustand";
-import { useEffect } from "react";
+import  { useEffect } from "react";
 
 export const useAuthSync = () => {
   const setUser = useUserStore((state) => state.setUser);

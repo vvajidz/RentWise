@@ -7,7 +7,11 @@ export interface AuthRequest extends Request {
   userId?: string;
 }
 
-export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const verifyToken = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   let token = "";
 
   if (req.cookies?.token) {
@@ -21,8 +25,16 @@ export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction)
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { id: string };
-    req.userId = decoded.id;
+    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+
+    // ✅ Correct field assignment
+    req.userId = decoded.userId;
+    
+    console.log("🧾 Decoded Payload:", decoded);
+    console.log("📥 Incoming Cookie:", req.cookies);
+    console.log("🔐 Extracted Token:", token);
+    console.log("🧾 Decoded UserID:", decoded.userId); // ✅ should show ID
+
     next();
   } catch (error) {
     console.error(error);

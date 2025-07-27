@@ -11,10 +11,10 @@ interface ImageGalleryProps {
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
   const selectedImage = selectedIndex !== null ? images[selectedIndex] : null;
 
   const closeModal = () => setSelectedIndex(null);
+
   const showNext = useCallback(() => {
     if (selectedIndex === null) return;
     setSelectedIndex((prev) => (prev! + 1) % images.length);
@@ -39,13 +39,18 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
 
   return (
     <div className="space-y-4" data-aos="fade-up">
-      {/* Responsive Display */}
-      <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 gap-4 rounded-2xl overflow-hidden">
+      {/* Desktop Grid */}
+      <div
+        className="hidden sm:grid grid-cols-2 md:grid-cols-3 gap-4 rounded-2xl overflow-hidden"
+        data-aos="zoom-in-up"
+      >
         {images.map((img, idx) => (
           <div
             key={idx}
             onClick={() => setSelectedIndex(idx)}
             className="relative cursor-pointer group"
+            data-aos="fade-up"
+            data-aos-delay={`${idx * 100}`}
           >
             <Image
               src={img}
@@ -58,8 +63,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
         ))}
       </div>
 
-      {/* Mobile View: only one image */}
-      <div className="sm:hidden">
+      {/* Mobile Single Image */}
+      <div className="sm:hidden" data-aos="fade-in">
         <div
           className="relative cursor-pointer"
           onClick={() => setSelectedIndex(0)}
@@ -81,7 +86,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
         className="fixed inset-0 z-[9999]"
       >
         <div className="fixed inset-0 bg-black/90 flex items-center justify-center px-4">
-          <Dialog.Panel className="relative w-full max-w-6xl flex justify-center items-center">
+          <Dialog.Panel
+            className="relative w-full max-w-6xl flex justify-center items-center"
+            data-aos="zoom-in"
+          >
             <button
               onClick={closeModal}
               className="absolute top-4 right-4 text-white bg-black/50 p-2 rounded-full z-50"

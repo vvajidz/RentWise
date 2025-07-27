@@ -13,7 +13,7 @@ export const comparePasswords = async (inputPassword: string, hashedPassword: st
 export const generateToken = (user : IUser): string => {
     return jwt.sign(
         {
-            id : user._id,
+            userId : user._id.toString(),
             role: user.role
         },
         process.env.JWT_SECRET as string,

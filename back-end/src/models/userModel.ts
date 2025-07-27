@@ -2,10 +2,14 @@ import mongoose, { Document, Schema } from "mongoose";
 import { ROLES, RoleType } from "../constatnts.ts/role";
 
 export interface IUser extends Document {
+  _id:string;
   fullName: string;
+  profilePicture:string;
   email: string;
+  currentProperty:mongoose.Schema.Types.ObjectId;
   passwordHash: string;
   role: RoleType;
+  phone:string;
   status: "active" | "suspended";
   agreedToTerms: boolean;
   createdAt?: Date;
@@ -18,6 +22,10 @@ const UserSchema: Schema<IUser> = new Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    profilePicture:{
+      type:String,
+      default:null
     },
     email: {
       type: String,
@@ -35,6 +43,16 @@ const UserSchema: Schema<IUser> = new Schema(
       enum: [ROLES.TENANT, ROLES.OWNER, ROLES.ADMIN],
       required: true,
     },
+    phone:{
+      type:String,
+      unique:true,
+      default:null
+    },
+    currentProperty: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Property",
+    default: null,
+  },
     status: {
       type: String,
       enum: ["active", "suspended"],
