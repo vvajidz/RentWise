@@ -51,7 +51,7 @@ export default function RentWiseHeader() {
           data-aos="zoom-in"
           data-aos-delay="400"
         >
-          <Link href="/properties">
+          <Link href="/all-properties">
             <button className="group px-8 py-3 bg-gradient-to-r from-[#0f172a] to-[#1e3a8a] text-white hover:from-[#1e3a8a] hover:to-[#0f172a] text-base font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl relative overflow-hidden">
               <span className="relative z-10">Explore Properties</span>
               <div className="absolute inset-0 bg-gradient-to-r from-[#1e40af] to-[#1d4ed8] opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>

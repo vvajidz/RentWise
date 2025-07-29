@@ -4,15 +4,18 @@ import React from 'react';
 import { Plus } from 'lucide-react';
 import { useUserStore } from "@/store/zustand/zustand";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from 'next/navigation';
 
 const OwnerHeader: React.FC = () => {
   const { user } = useUserStore();
+  const router = useRouter();
 
   const ownerName = user?.fullName || "owner";
 
-  const handleAddProperty = () => {
-    console.log('Add new property clicked');
+ const handleAddProperty = () => {
+    router.push("/addProperty")
   };
+
 
   return (
     <div className="relative bg-gradient-to-br from-[#060616] to-[#020d86] rounded-b-3xl overflow-hidden pb-25">
