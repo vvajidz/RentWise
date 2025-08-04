@@ -125,6 +125,6 @@ export const getOwnerWithProperties = async (req: Request, res: Response) => {
     res.status(200).json(owner);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Something went wrong' });
+    res.status(500).json({ message: 'Something went wrong' })
   }
 };
