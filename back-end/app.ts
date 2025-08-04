@@ -4,6 +4,7 @@ import connectDB from "./src/config/db";
 import authRouter from "./src/routes/authRoutes";
 import propertyRouter from "./src/routes/propertyRouter"
 import cookieParser from "cookie-parser";
+import ownerRouter from "./src/routes/ownerRoutes"
 
 // Connect to DB
 connectDB();
@@ -27,6 +28,7 @@ app.post("/test", (req, res) => {
 // Routes
 app.use("/api/auth", authRouter); 
 app.use("/api/property", propertyRouter )
+app.use('/api/owner',ownerRouter )
 
 
 const PORT = 3001;

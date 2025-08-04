@@ -109,22 +109,3 @@ export const createProperty = async (req: Request, res: Response) => {
 };
 
 
-// --------------------------------------------------ADDED PROPERTIES--------------------------------------------------
-
-export const getOwnerWithProperties = async (req: Request, res: Response) => {
-  const { ownerId } = req.params;
-  try {
-    const owner = await Owner.findOne({user : ownerId})
-      .populate('user') // if `user` is a ref to User model
-      .populate('properties'); // if `properties` is [ObjectId] to Property
-
-    if (!owner) {
-      return res.status(404).json({ message: 'Owner not found' });
-    }
-
-    res.status(200).json(owner);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Something went wrong' })
-  }
-};

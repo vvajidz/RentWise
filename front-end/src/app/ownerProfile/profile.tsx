@@ -11,6 +11,7 @@ import SecuritySettingsCard from "./profile/ownerSecurity";
 import Homenavbar from "@/components/common/navbar";
 import { useUserStore } from "@/store/zustand/zustand";
 import { useRouter } from "next/navigation";
+import { House, LayoutDashboard } from "lucide-react";
 
 export default function OwnerProfilePage() {
   const [showBankDetails, setShowBankDetails] = useState(false);
@@ -84,14 +85,24 @@ export default function OwnerProfilePage() {
     <>
       <Homenavbar />
 
-      <div className="min-h-screen bg-slate-900 px-4 py-6 pt-24">
+      <div className="min-h-screen bg-white px-4 py-6 pt-24">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Owner Profile Settings</h1>
-            <p className="text-slate-400">
+            <h1 className="text-3xl font-bold text-blue-950 mb-2">Owner Profile Settings</h1>
+            <p className="text-slate-900">
               Manage your profile, settings, and account information
             </p>
           </div>
+          <div className="mb-8 sticky">
+            <button
+              onClick={() => router.push("/ownerDashboard")}
+              className="w-full flex items-center justify-center gap-3 bg-blue-800 hover:bg-red-900 text-white font-semibold py-4 px-6 rounded-2xl text-xl shadow-lg transition duration-200"
+            >
+              <LayoutDashboard className="w-6 h-6" />
+              Go to Dashboard
+            </button>
+          </div>
+
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-3 space-y-6">
@@ -107,7 +118,6 @@ export default function OwnerProfilePage() {
                 setShowBankDetails={setShowBankDetails}
               />
             </div>
-            
 
             <div className="lg:col-span-3 space-y-6">
               <NotificationsCard

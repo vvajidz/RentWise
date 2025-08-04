@@ -26,10 +26,10 @@ export default function ProfileCard() {
   if (!user) return null;
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-6 col-span-12 lg:col-span-8">
+    <div className="bg-blue-950 rounded-2xl shadow-lg border border-gray-900 p-6  top-6 col-span-12 lg:col-span-8">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-gray-200">
+        <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-gray-100">
           <Image
             src={user.profilePicture || fallbackImage}
             alt={user.fullName || "Owner"}
@@ -40,13 +40,13 @@ export default function ProfileCard() {
 
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold text-gray-100">
               {user.fullName}
             </h2>
             <CheckCircle className="w-5 h-5 text-green-500" />
           </div>
 
-          <p className="text-sm text-gray-600">{user.email}</p>
+          <p className="text-sm text-gray-100">{user.email}</p>
 
           <span className="inline-flex items-center px-3 py-1 mt-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
             <UserIcon className="w-3 h-3 mr-1" />
@@ -56,27 +56,27 @@ export default function ProfileCard() {
       </div>
 
       {/* Profile Info */}
-      <div className="space-y-3 border-t border-gray-100 pt-4 text-sm text-gray-700">
+      <div className="space-y-3 border-t border-gray-100 pt-4 text-sm text-gray-100">
         <div className="flex items-center gap-3">
-          <Calendar className="w-4 h-4 text-gray-500" />
+          <Calendar className="w-4 h-4 text-gray-100" />
           <span>
             Member since{" "}
-            <span className="font-medium text-gray-900">
+            <span className="font-medium text-gray-100">
               {formatDate(user.createdAt)}
             </span>
           </span>
         </div>
 
         <div className="flex items-center gap-3">
-          <Home className="w-4 h-4 text-gray-500" />
-          <span className="text-gray-700 font-medium">
+          <Home className="w-4 h-4 text-gray-100" />
+          <span className="text-gray-100 font-medium">
             Owns {user.ownerData?.ownedProperties ?? 0} properties  
           </span>
         </div>
       </div>
 
       {/* Bio */}
-      <p className="text-sm text-gray-600 mt-6">{user.ownerData?.bio }</p>
+      <p className="text-sm text-gray-100 mt-6">{user.ownerData?.bio }</p>
     </div>
   );
 }

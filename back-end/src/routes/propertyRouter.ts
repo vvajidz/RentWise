@@ -1,6 +1,6 @@
 import express from "express";
 import { Router } from "express";
-import {createProperty,getOwnerWithProperties,properties, propertyId } from "../controllers/properties";
+import {createProperty,properties, propertyId } from "../controllers/properties";
 import { verifyRole } from "../middleware/verifyRole";
 
 
@@ -10,7 +10,6 @@ router.post("/createproperty", verifyRole(["owner"]), createProperty);
 router.get("/allproperty", properties);
 router.get("/:id" , propertyId)
 
-router.get('/myproperty/:ownerId',verifyRole(["owner"]),getOwnerWithProperties)
 
 
 
