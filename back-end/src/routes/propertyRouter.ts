@@ -1,9 +1,17 @@
 import express from "express";
-import { properties, propertyId } from "../controllers/properties";
+import { Router } from "express";
+import {createProperty,getOwnerWithProperties,properties, propertyId } from "../controllers/properties";
+import { verifyRole } from "../middleware/verifyRole";
 
-const router = express.Router();
 
-router.get("/allproperty", properties );
+const router = Router();
+
+router.post("/createproperty", verifyRole(["owner"]), createProperty);
+router.get("/allproperty", properties);
 router.get("/:id" , propertyId)
+
+router.get('/myproperty/:ownerId',verifyRole(["owner"]),getOwnerWithProperties)
+
+
 
 export default router;

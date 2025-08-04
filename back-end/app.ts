@@ -20,11 +20,16 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+app.post("/test", (req, res) => {
+  console.log("✅ working test route", req.body);
+  res.json({ ok: true });
+});
 // Routes
-app.use("/api/auth", authRouter);        // Local auth routes
+app.use("/api/auth", authRouter); 
 app.use("/api/property", propertyRouter )
-// Start server
-const PORT = 5000;
+
+
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

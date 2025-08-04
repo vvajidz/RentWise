@@ -1,5 +1,7 @@
-import { Response , Request } from "express"
+import { Response , Request, response } from "express"
 import Property from "../models/propertiesModel"
+import Owner from "../models/ownerModel";
+import { log } from "console";
 
 
 export const properties = async (req : Request , res : Response) =>{
@@ -41,4 +43,88 @@ export const propertyId = async (req: Request, res: Response) => {
   }
 };
 
+// -----------------------------------------------------------ADD-PROPERTY-----
 
+export const createProperty = async (req: Request, res: Response) => {
+  try {
+    const user = (req as any).user; 
+    const userId = user.id;
+
+    const {
+      propertyName,
+      propertyType,
+      address,
+      location,
+      images,
+      monthlyRent,
+      leaseTerms,
+      amenities,
+      description,
+      furnished,
+      bedrooms,
+      bathrooms,
+      area,
+    } = req.body;
+
+    const newProperty = await Property.create({
+      propertyName,
+      propertyType,
+      address,
+      location,
+      images,
+      monthlyRent,
+      leaseTerms,
+      amenities,
+      description,
+      bedrooms,
+      bathrooms,
+      furnishing: furnished ? "fully-furnished" : "unfurnished",
+      areaSqFt: parseInt(area),
+      securityDeposit: monthlyRent * 2,
+      availableFrom: new Date(),
+      owner: userId,
+    });
+
+    const owner = await Owner.findOne({ userId });
+    if (!owner) {
+      return res.status(404).json({ message: "Owner not found" });
+    }
+
+    owner.properties.push(newProperty._id);
+    await owner.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "Property created successfully",
+      property: newProperty,
+    });
+  } catch (error: any) {
+    console.error("❌ Error in createProperty:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+
+// --------------------------------------------------ADDED PROPERTIES--------------------------------------------------
+
+export const getOwnerWithProperties = async (req: Request, res: Response) => {
+  const { ownerId } = req.params;
+  try {
+    const owner = await Owner.findOne({user : ownerId})
+      .populate('user') // if `user` is a ref to User model
+      .populate('properties'); // if `properties` is [ObjectId] to Property
+
+    if (!owner) {
+      return res.status(404).json({ message: 'Owner not found' });
+    }
+
+    res.status(200).json(owner);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+};
