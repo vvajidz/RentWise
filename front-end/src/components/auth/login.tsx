@@ -34,12 +34,7 @@ export default function SignInCard({ onSwitch }: Props) {
       const res = await api.post("/auth/login", formData);
       const data = res.data;
 
-      setUser({
-        fullName: data.user.fullName,
-        email: data.user.email,
-        role: data.user.role,
-        createdAt:data.user.createdAt
-      });
+      setUser(data);
 
       toast.success("Logged in successfully 🚀");
     } catch (err:any) {

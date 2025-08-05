@@ -4,10 +4,11 @@ import { usePathname } from 'next/navigation';
 import { Home, Box, DollarSign, Settings, User, Menu, X } from 'react-feather';
 import { useState, useEffect } from 'react';
 import { useUserStore } from '@/store/zustand/zustand';
+import { LayoutDashboard } from 'lucide-react';
 
 
 const navItems = [
-  { icon: <Home size={18} />, href: '/ownerDashboard', text: 'Dashboard' },
+  { icon: <LayoutDashboard size={18} />, href: '/ownerDashboard', text: 'Dashboard' },
   { icon: <Box size={18} />, href: '/ownerDashboard/properties', text: 'My Properties' },
   { icon: <DollarSign size={18} />, href: '/ownerDashboard/income', text: 'Income' },
   { icon: <User size={18} />, href: '/ownerDashboard/tenant', text: 'Tenants' },
@@ -63,7 +64,7 @@ export default function Sidebar() {
             {/* Header */}
             <div className="bg-blue-950 text-white p-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">PropertyPro</h2>
+                <h2 className="text-lg font-semibold">RentWise</h2>
                 <button 
                   onClick={closeSidebar}
                   className="text-blue-200 hover:text-white transition-colors"
@@ -124,7 +125,7 @@ export default function Sidebar() {
     <div className="w-64 bg-blue-950 text-blue-50 h-full">
       <div className="p-4 flex flex-col h-full">
         <div className="mb-8 p-4 border-b border-blue-800">
-          <h1 className="text-xl font-bold">PropertyPro</h1>
+          <h1 className="text-xl font-bold">RentWise</h1>
         </div>
         
         <nav className="flex-1">

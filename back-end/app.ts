@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./src/config/db";
 import authRouter from "./src/routes/authRoutes";
+import adminRouter from "./src/routes/adminRoutes"
 import propertyRouter from "./src/routes/propertyRouter"
 import cookieParser from "cookie-parser";
 import ownerRouter from "./src/routes/ownerRoutes"
@@ -29,6 +30,7 @@ app.post("/test", (req, res) => {
 app.use("/api/auth", authRouter); 
 app.use("/api/property", propertyRouter )
 app.use('/api/owner',ownerRouter )
+app.use('/api',adminRouter)
 
 
 const PORT = 3001;

@@ -3,14 +3,14 @@
 import { useState, useEffect } from "react";
 import { Pencil } from "lucide-react";
 import useAOS from "@/hooks/aox";
-import TenantProfileCard from "./profile/tenantProfile";
-import CurrentPropertyCard from "./profile/tenantCurrentProperty";
-import DocumentsCard from "./profile/tenantDocument";
+import TenantProfileCard from "../../components/tenantProfile/tenantProfile";
+import CurrentPropertyCard from "../../components/tenantProfile/tenantCurrentProperty";
+import DocumentsCard from "../../components/tenantProfile/tenantDocument";
 import Homenavbar from "@/components/common/navbar";
 import { useUserStore } from "@/store/zustand/zustand";
 import { useRouter } from "next/navigation";
 import { User } from "@/store/zustand/zustand"; // make sure this is your User type
-import EditUserModal from "./profile/tenantEdit";
+import EditUserModal from "../../components/tenantProfile/tenantEdit";
 
 export default function TenantProfilPage() {
   useAOS();

@@ -1,97 +1,152 @@
 "use client"
 
-import React from 'react';
-import { Plus } from 'lucide-react';
-import { useUserStore } from "@/store/zustand/zustand";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react'
+import { House, Paperclip, Plus } from 'lucide-react'
+import { useUserStore } from "@/store/zustand/zustand"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useRouter } from 'next/navigation'
+
 
 const OwnerHeader: React.FC = () => {
-  const { user } = useUserStore();
-  const router = useRouter();
+  const { user } = useUserStore()
+  const router = useRouter()
+  const ownerName = user?.fullName || "owner"
 
-  const ownerName = user?.fullName || "owner";
+  const handleAddProperty = () => router.push("/addProperty")
 
- const handleAddProperty = () => {
-    router.push("/addProperty")
-  };
+  const stats = [
+    {
+      icon: <House />,
+      value: "12",
+      label: "Total Properties",
+      color: "from-emerald-400 to-teal-600",
+      pulse: "bg-emerald-400"
+    },
+    {
+      icon: <Paperclip />,
+      value: "7",
+      label: "Active Leases",
+      color: "from-blue-400 to-indigo-600",
+      pulse: "bg-blue-400"
+    },
+    {
+      icon: "₹",
+      value: "₹1,20,000",
+      label: "This Month's Revenue",
+      color: "from-purple-900 to-blue-800",
+      pulse: "bg-purple-400"
+    }
+  ]
 
+  useEffect(() => {
+    // Ensure AOS is initialized (if not already done in main component)
+    if (typeof window !== 'undefined' && !window.Aos) {
+      import('aos').then((AOS) => {
+        AOS.init({
+          duration: 800,
+          easing: 'ease-in-out',
+          once: true
+        })
+      })
+    }
+  }, [])
 
   return (
-    <div className="relative bg-gradient-to-br from-[#060616] to-[#020d86] rounded-b-3xl overflow-hidden pb-25">
-      {/* Decorative background gradients */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-radial from-[#F4EBD0] to-transparent rounded-full -translate-x-48 -translate-y-48"></div>
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-radial from-[#F4EBD0] to-transparent rounded-full translate-x-40 translate-y-40"></div>
+    <div className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 rounded-3xl overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute top-10 left-10 w-72 h-72 bg-gradient-to-br from-cyan-400/20 to-blue-600/20 rounded-full blur-3xl animate-pulse" 
+          data-aos="fade-down"
+          data-aos-delay="100"
+        />
+        <div 
+          className="absolute bottom-10 right-10 w-96 h-96 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-full blur-3xl animate-pulse delay-1000" 
+          data-aos="fade-up"
+          data-aos-delay="300"
+        />
+        <div 
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-br from-emerald-400/10 to-teal-600/10 rounded-full blur-3xl animate-pulse delay-500" 
+          data-aos="fade-down"
+          data-aos-delay="200"
+        />
       </div>
 
-      {/* Grid pattern */}
-      <div className="absolute inset-0 opacity-5" 
-        style={{
-          backgroundImage: `linear-gradient(90deg, rgba(244,235,208,0.1) 1px, transparent 1px),
-                            linear-gradient(rgba(244,235,208,0.1) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
-        }} />
+      {/* Mesh gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent" />
 
-      {/* Header content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-12">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+      {/* Content container */}
+      <div className="relative z-10 px-8 py-12 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+          {/* Main header section */}
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-12">
+            {/* User info section */}
+            <div className="flex items-center gap-6" data-aos="fade-right">
+              <div className="relative">
+                <Avatar className="w-20 h-20 border-4 border-white/20 shadow-2xl ring-4 ring-cyan-500/20">
+                  <AvatarImage src={user?.profilePicture || undefined} />
+                  <AvatarFallback className="bg-gradient-to-br from-cyan-500 to-blue-600 text-white text-2xl font-bold">
+                    {ownerName[0]}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-3 border-white shadow-lg" />
+              </div>
 
-          {/* Left section */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <Avatar className="w-14 h-14 border border-[#F4EBD0]/40 shadow-md">
-                <AvatarImage src={user?.profilePicture || undefined} />
-                <AvatarFallback>{ownerName[0]}</AvatarFallback>
-              </Avatar>
-
-              <div>
-                <h1 className="text-4xl lg:text-5xl font-light text-white tracking-tight">
-                  Welcome back,{' '}
-                  <span className="font-semibold bg-gradient-to-r from-[#F4EBD0] to-[#E6D7A0] bg-clip-text text-transparent">
-                    {ownerName}
-                  </span>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                  <span className="text-cyan-400 text-sm font-medium tracking-wider uppercase">Dashboard</span>
+                </div>
+                <h1 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
+                  Hello, <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-100 bg-clip-text text-transparent">{ownerName}</span>
                 </h1>
-
-                <p className="text-lg text-gray-300 font-light max-w-md mt-1">
-                  Manage your premium properties with ease and insight.
+                <p className="text-slate-300 text-lg font-light max-w-md">
+                  Your property empire awaits. Let's make today count.
                 </p>
               </div>
             </div>
-          </div>
 
-          {/* Add Property CTA */}
-          <div className="flex-shrink-0">
+            {/* Action button */}
             <button
               onClick={handleAddProperty}
-              className="group relative bg-gradient-to-r from-[#F4EBD0] to-[#E6D7A0] hover:from-[#E6D7A0] hover:to-[#F4EBD0] text-[#1C1E53] font-semibold px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ease-out border border-[#F4EBD0]/20"
+              className="group relative overflow-hidden bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold px-8 py-4 rounded-2xl shadow-2xl hover:shadow-cyan-500/25 transform hover:scale-105 transition-all duration-300 ease-out self-start"
+              data-aos="fade-left"
+              data-aos-delay="200"
             >
-              <div className="flex items-center gap-3">
-                <Plus className="w-5 h-5 transition-transform duration-300 group-hover:rotate-90" />
-                <span className="text-base tracking-wide">Add New Property</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative flex items-center gap-3">
+                <Plus className="w-6 h-6 transition-transform duration-300 group-hover:rotate-180" />
+                <span className="text-lg tracking-wide">Add Property</span>
               </div>
             </button>
           </div>
-        </div>
 
-        {/* Summary Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/10 text-gray-300 text-sm">
-          <div className="flex flex-col">
-            <span className="text-lg text-[#F4EBD0] font-semibold">12</span>
-            <span>Total Properties</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg text-[#F4EBD0] font-semibold">7</span>
-            <span>Active Leases</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg text-[#F4EBD0] font-semibold">₹1,20,000</span>
-            <span>This Month’s Revenue</span>
+          {/* Stats section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {stats.map((stat, index) => (
+              <div 
+                key={index} 
+                className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105"
+                data-aos="fade-up"
+                data-aos-delay={100 * (index + 1)}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center`}>
+                    <span className="text-white font-bold text-xl">{stat.icon}</span>
+                  </div>
+                  <div className={`w-2 h-2 ${stat.pulse} rounded-full animate-pulse`} />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-3xl font-bold text-white">{stat.value}</h3>
+                  <p className="text-slate-300 font-medium">{stat.label}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default OwnerHeader;
+export default OwnerHeader
