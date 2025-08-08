@@ -10,64 +10,6 @@ import Owner from "../models/ownerModel";
 
 // SIGNUP-------------------------------
 
-// export const signup = async (req : Request , res : Response) => {
-
-//     try {
-//     const{fullName , email , password , role , agreedToTerms } = req.body;
-
-//     if (!fullName || !email || !password || !role ) {
-//         return res.status(400).json({message : "Fill the details Check missing one"})
-//     }
-//     if(![ROLES.TENANT,ROLES.OWNER].includes(role)){
-//         return res.status(400).json({message : "Invalid role"})
-//     }
-//     if (!agreedToTerms) {
-//       return res.status(400).json({ message: "You must agree to the terms to sign up." });
-//     }
-//     const existingUser = await User.findOne({email})
-//     if(existingUser){
-//         return res.status(400).json({message : "email already used"})
-//     }
-
-//     const passwordHash = await hashPassword(password)
-
-//     const newUser = await User.create({
-//         fullName,
-//         email,
-//         passwordHash,
-//         role,
-//         agreedToTerms,
-//     })
-    
-// const token = generateToken(newUser)
-
-//     res
-//     .cookie("token", token, {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === "production",
-//     sameSite: "strict",
-//     maxAge: 7 * 24 * 60 * 60 * 1000,
-//     })
-//     .status(201).json({
-//         message : "Signup Successful",
-//         token,
-//         user:{
-//             id : newUser._id,
-//             fullName : newUser.fullName,
-//             email : newUser.email,
-//             role : newUser.role
-//         }
-//     })
-//     }catch(error){
-//         console.error("Signup error" , error);
-//         res.status(500).json({message : "Server error during signup"})
-// }
-// }
-
-
-
-
-
 export const signup = async (req: Request, res: Response) => {
   try {
     const {fullName,email,password,role: rawRole,phone,agreedToTerms} = req.body;

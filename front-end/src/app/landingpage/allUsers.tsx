@@ -7,9 +7,8 @@ import RentWiseHeader from "@/components/common/header";
 import ReviewsSection from "@/components/common/reviews";
 import HowItWorks from "@/components/common/working";
 import { useUserStore } from "@/store/zustand/zustand";
-import RentWiseAdmin from "../../components/admin/header";
-import RentWiseOwner from "../ownerProfile/header";
-import RentWiseTenants from "../tenantProfile/tenantHeader";
+import RentWiseOwner from "../../components/roleHeader/ownerHeader";
+import RentWiseTenants from "../../components/roleHeader/tenantHeader";
 import Homenavbar from "@/components/common/navbar";
 
 export default function LandingPage() {
@@ -22,8 +21,6 @@ export default function LandingPage() {
     headerComponent = <RentWiseTenants />;
   } else if (user?.role === "owner") {
     headerComponent = <RentWiseOwner />;
-  } else if (user?.role === "admin") {
-    headerComponent = <RentWiseAdmin />;
   } else {
     headerComponent = <RentWiseHeader />;
   }

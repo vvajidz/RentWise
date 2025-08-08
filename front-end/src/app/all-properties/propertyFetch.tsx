@@ -2,35 +2,20 @@
 import { useEffect, useState } from "react";
 import api from "@/lib/axios";
 import { toast } from "react-hot-toast";
-import { log } from "node:console";
+import { Property } from "@/types/property"; // your property type
 
-export type Property = {
-  _id: string;
-  propertyName: string;
-  propertyType: string;
-  address: string;
-  location: {
-    type: "Point";
-    coordinates: [number, number];
-  };
-  images: string[];
-  monthlyRent: number;
-  securityDeposit: number;
-  availableFrom: string;
-  amenities: string[];
-  leaseTerms: number;
-};
-
-export function useProperties() {
+export function useProperties(page: number, limit: number) {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchProperties = async () => {
+      setLoading(true);
       try {
-        const res = await api.get("/property/allproperty");
+        const res = await api.get(`/property/allproperty?page=${page}&limit=${limit}`);
         setProperties(res.data.data);
-        console.log("properties fetched :" , properties)
+        setTotalPages(res.data.totalPages);
       } catch (err) {
         toast.error("Failed to load properties");
         console.error(err);
@@ -40,8 +25,7 @@ export function useProperties() {
     };
 
     fetchProperties();
-  }, []);
+  }, [page, limit]);
 
-
-  return { properties, loading };
+  return { properties, loading, totalPages };
 }

@@ -6,9 +6,13 @@ import {
   ShieldCheck,
   DollarSign,
 } from "lucide-react";
+import { useState } from "react";
+import axios from "../../lib/axios";
+import { toast } from "react-hot-toast";
 
 interface PricingCardProps {
   property: {
+    _id: string; // propertyId from backend
     monthlyRent?: number;
     securityDeposit?: number;
     utilitiesIncluded?: boolean;
@@ -20,6 +24,7 @@ interface PricingCardProps {
 
 const PricingCard: React.FC<PricingCardProps> = ({ property }) => {
   const {
+    _id: propertyId,
     monthlyRent,
     securityDeposit,
     utilitiesIncluded,
@@ -27,6 +32,28 @@ const PricingCard: React.FC<PricingCardProps> = ({ property }) => {
     leaseTerms,
     isAvailable,
   } = property;
+
+  const [isBooking, setIsBooking] = useState(false);
+  const [requestSent, setRequestSent] = useState(false);
+
+  const handleBookNow = async () => {
+    if (!propertyId) {
+      toast.error("Property ID missing");
+      return;
+    }
+
+    setIsBooking(true);
+    try {
+      const res = await axios.post("/booking/request", { propertyId });
+      toast.success(res.data.message || "Booking request sent!");
+      setRequestSent(true);
+    } catch (err: any) {
+      const msg = err.response?.data?.message || "Something went wrong";
+      toast.error(msg);
+    } finally {
+      setIsBooking(false);
+    }
+  };
 
   const formattedAvailableFrom = availableFrom
     ? new Date(availableFrom).toLocaleDateString("en-US", {
@@ -43,7 +70,10 @@ const PricingCard: React.FC<PricingCardProps> = ({ property }) => {
       className="bg-white rounded-2xl p-6 shadow-xl border border-gray-200"
     >
       {/* Top Section */}
-      <div className="flex items-center justify-between mb-6" data-aos="fade-down">
+      <div
+        className="flex items-center justify-between mb-6"
+        data-aos="fade-down"
+      >
         <div>
           <h2 className="text-3xl font-bold text-gray-900">
             ${monthlyRent?.toLocaleString() || "N/A"}
@@ -103,16 +133,27 @@ const PricingCard: React.FC<PricingCardProps> = ({ property }) => {
       </div>
 
       {/* Button */}
-      <div className="pt-6 flex justify-end" data-aos="fade-up" data-aos-delay="200">
+      <div
+        className="pt-6 flex justify-end"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
         <button
-          disabled={!isAvailable}
+          onClick={handleBookNow}
+          disabled={!isAvailable || isBooking || requestSent}
           className={`w-48 text-white font-semibold text-sm py-3 px-6 rounded-xl transition duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 ${
-            isAvailable
-              ? "bg-blue-600 hover:bg-blue-700"
-              : "bg-gray-400 cursor-not-allowed"
+            !isAvailable || isBooking || requestSent
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
           }`}
         >
-          {isAvailable ? "Book Now" : "Not Available Yet"}
+          {!isAvailable
+            ? "Not Available Yet"
+            : requestSent
+            ? "Request Sent"
+            : isBooking
+            ? "Booking..."
+            : "Book Now"}
         </button>
       </div>
     </div>

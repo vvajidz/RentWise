@@ -4,6 +4,7 @@ interface SidebarItem {
   id: string;
   icon: any;
   label: string;
+  external?: boolean; // Add optional external flag for external links
 }
 
 interface SidebarProps {
@@ -15,6 +16,7 @@ interface SidebarProps {
 
 const Sidebar = ({ activeSection, setActiveSection, sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const sidebarItems: SidebarItem[] = [
+    { id: 'home', icon: Home, label: 'Homepage', external: true },
     { id: 'dashboard', icon: Home, label: 'Dashboard' },
     { id: 'rentals', icon: Home, label: 'My Rentals' },
     { id: 'payments', icon: CreditCard, label: 'Payments' },
@@ -38,11 +40,15 @@ const Sidebar = ({ activeSection, setActiveSection, sidebarOpen, setSidebarOpen 
             <button
               key={item.id}
               onClick={() => {
-                setActiveSection(item.id);
-                setSidebarOpen(false);
+                if (item.external) {
+                  window.location.href = '/'; // Navigate to home
+                } else {
+                  setActiveSection(item.id);
+                  setSidebarOpen(false);
+                }
               }}
               className={`w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-700 transition-colors ${
-                activeSection === item.id ? 'bg-slate-700 border-r-4 border-amber-400' : ''
+                activeSection === item.id && !item.external ? 'bg-slate-700 border-r-4 border-amber-400' : ''
               }`}
             >
               <Icon className="w-5 h-5 text-amber-400" />

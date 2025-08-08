@@ -4,26 +4,37 @@ import Owner from "../models/ownerModel";
 import { log } from "console";
 
 
-export const properties = async (req : Request , res : Response) =>{
+export const properties = async (req: Request, res: Response) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
 
-    try{
-        const properties = await Property.find()
+    const [properties, total] = await Promise.all([
+      Property.find()
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      Property.countDocuments()
+    ]);
 
-        .sort({ createdAt: -1})
+    res.status(200).json({
+      success: true,
+      count: properties.length,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+      data: properties
+    });
+  } catch (error) {
+    console.error("Error fetching properties:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
 
-        res.status(200).json({
-            success:true,
-            count:properties.length,
-            data:properties
-        })
-    }catch(error){
-        console.error("Error fetching properties:" , error);
-        res.status(500).json({
-            success:false,
-            message:"Serverr error"
-        })
-    }
-}
 
 export const propertyId = async (req: Request, res: Response) => {
   try {

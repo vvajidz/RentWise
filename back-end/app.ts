@@ -6,6 +6,7 @@ import adminRouter from "./src/routes/adminRoutes"
 import propertyRouter from "./src/routes/propertyRouter"
 import cookieParser from "cookie-parser";
 import ownerRouter from "./src/routes/ownerRoutes"
+import bookingRouter from "./src/routes/bookingRoutes"
 
 // Connect to DB
 connectDB();
@@ -30,6 +31,7 @@ app.post("/test", (req, res) => {
 app.use("/api/auth", authRouter); 
 app.use("/api/property", propertyRouter )
 app.use('/api/owner',ownerRouter )
+app.use('/api/booking',bookingRouter)
 app.use('/api',adminRouter)
 
 
